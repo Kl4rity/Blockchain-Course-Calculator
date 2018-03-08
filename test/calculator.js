@@ -1,4 +1,4 @@
-var Calculator = artifacts.require("./Calculator.sol");
+var Calculator = artifacts.require("./CalculatorV2.sol");
 
 contract('Calculator', function(accounts) {
 
@@ -38,5 +38,45 @@ contract('Calculator', function(accounts) {
 
   // Add Test Case#3 here
 
+  it("should mutliply with 10 and divide by 5 to get the result of 30 (15*10)/5 = 30", function(){
+    // Get deployed instance
+    var calculator;
+
+    return Calculator.deployed().then(function(instance){
+      calculator = instance;
+      return calculator.multiplyWithNumber(10)
+    }).then(function(){
+      return calculator.divideByNumber(5)
+    }).then(function(){
+      return calculator.getResult.call()
+    }).then(function(result){
+      assert.equal(result.toNumber(), 30, "Result after mutiplying by 10 and dividing by 5 should be 30");
+    });
+  });
+
   // Add Test Case#4 here
+  it("Should double the result", function(){
+    var calculator;
+    return Calculator.deployed().then(function(instance){
+      calculator = instance;
+      return calculator.double()
+    }).then(function(){
+      return calculator.getResult.call()
+    }).then(function(result){
+      assert.equal(result.toNumber(), 60, "Result be 30 before and 60 after doubling");
+    });
+  });
+
+  // Add Test Case #5 here
+  it("Should halve the result", function(){
+    var calculator;
+    return Calculator.deployed().then(function(instance){
+      calculator = instance;
+      return calculator.halve()
+    }).then(function(){
+      return calculator.getResult.call()
+    }).then(function(result){
+      assert.equal(result.toNumber(), 30, "Result should be 60 before and 30 after halving");
+    });
+  });
 });
